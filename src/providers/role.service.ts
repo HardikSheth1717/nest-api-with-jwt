@@ -4,7 +4,7 @@ import { RoleQuery } from '../query/role.query';
 import validator from '../validators/validator';
 import SuccessResponse from '../common/responses/success.response';
 import ErrorResponse from '../common/responses/error.response';
-import Role from 'src/dto/role.dto';
+import Role from '../dto/role.dto';
 
 @Injectable()
 export class RoleService {

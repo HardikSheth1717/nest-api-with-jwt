@@ -74,4 +74,13 @@ export class UserQuery {
             keyValue: id
         });
     };
+
+    checkUserRole = async (id: number) => {
+        return await this.sqlFunction.Execute(`
+            SELECT R.RoleName
+            FROM users U
+            INNER JOIN roles R ON U.RoleId = R.Id
+            WHERE U.Id = ?
+        `, [id.toString()]);
+    }
 }

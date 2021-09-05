@@ -3,7 +3,7 @@ import { Body, Controller, Get, Param, Post, Delete } from '@nestjs/common';
 import { UserService } from '../providers/user.service';
 import SuccessResponse from '../common/responses/success.response';
 import ErrorResponse from '../common/responses/error.response';
-import User from 'src/dto/user.dto';
+import User from '../dto/user.dto';
 
 @Controller()
 export class UserController {

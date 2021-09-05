@@ -1,5 +1,5 @@
-export class AuthConfig {
-    secret: string = 'H@rd1k$1717';
-    jwtAccessTokenValidity: number = 60;
-    jwtRefreshTokenValidity: number = 120;
+export default class AuthConfig {
+    static secret: string = 'H@rd1k$1717';
+    static jwtAccessTokenValidity: number = 60;
+    static jwtRefreshTokenValidity: number = 120;
 }
