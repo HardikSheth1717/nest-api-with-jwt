@@ -4,6 +4,7 @@ import { UserService } from '../providers/user.service';
 import SuccessResponse from '../common/responses/success.response';
 import ErrorResponse from '../common/responses/error.response';
 import User from '../dto/user.dto';
+import CommonDto from 'src/dto/common.dto';
 
 @Controller()
 export class UserController {
@@ -16,9 +17,9 @@ export class UserController {
         return this.userService.getUserList();
     };
 
-    @Get('/user/:userId')
-    async getUserDetails(@Param('userId') userId: number) : Promise<SuccessResponse | ErrorResponse> {
-        return this.userService.getUserDetails(userId);
+    @Get('/user/:id')
+    async getUserDetails(@Param() user: CommonDto) : Promise<SuccessResponse | ErrorResponse> {
+        return this.userService.getUserDetails(user.id);
     };
 
     @Post('/saveuser')
@@ -26,8 +27,8 @@ export class UserController {
         return this.userService.saveUser(user);
     };
 
-    @Delete('/deleteuser/:userId')
-    async deleteUser(@Param('userId') userId: number) : Promise<SuccessResponse | ErrorResponse> {
-        return this.userService.deleteUser(userId);
+    @Delete('/deleteuser/:id')
+    async deleteUser(@Param() user: CommonDto) : Promise<SuccessResponse | ErrorResponse> {
+        return this.userService.deleteUser(user.id);
     };
 }

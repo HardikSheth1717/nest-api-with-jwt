@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
 import { RoleQuery } from '../query/role.query';
-import validator from '../validators/validator';
 import SuccessResponse from '../common/responses/success.response';
 import ErrorResponse from '../common/responses/error.response';
 import Role from '../dto/role.dto';
@@ -23,78 +22,38 @@ export class RoleService {
     };
 
     getRoleDetails = async (id: number): Promise<SuccessResponse | ErrorResponse> => {
-        const errors = validator.NumberValidator("id", id.toString(), true);
+        const list = await this.roleQuery.getRoleDetails(id);
 
-        if (errors.length > 0) {
-            return {
-                status: false,
-                error: errors
-            }
-        }
-        else {
-            const list = await this.roleQuery.getRoleDetails(id);
-
-            return {
-                status: true,
-                data: list
-            }
+        return {
+            status: true,
+            data: list
         }
     };
 
     getRoleByRoleName = async (roleName: string): Promise<SuccessResponse | ErrorResponse> => {
-        const errors = validator.StringValidator("roleName", roleName, true, "text", 5, 45);
+        const list = await this.roleQuery.getRoleByName(roleName);
 
-        if (errors.length > 0) {
-            return {
-                status: false,
-                error: errors
-            }
-        }
-        else {
-            const list = await this.roleQuery.getRoleByName(roleName);
-
-            return {
-                status: true,
-                data: list
-            }
+        return {
+            status: true,
+            data: list
         }
     };
 
     saveRole = async (role: Role): Promise<SuccessResponse | ErrorResponse> => {
-        const errors = validator.StringValidator("roleName", role.roleName, true, "text", 3, 50);
+        const newId = await this.roleQuery.saveRole(role.id, role.roleName);
 
-        if (errors.length > 0) {
-            return {
-                status: false,
-                error: errors
-            }
-        }
-        else {
-            const newId = await this.roleQuery.saveRole(role.id, role.roleName);
-
-            return {
-                status: true,
-                data: [role]
-            }
+        return {
+            status: true,
+            data: [role]
         }
     };
 
     deleteRole = async (id: number): Promise<SuccessResponse | ErrorResponse> => {
-        const errors = validator.NumberValidator("id", id.toString(), true);
+        const deleteId = await this.roleQuery.deleteRole(id);
 
-        if (errors.length > 0) {
-            return {
-                status: false,
-                error: errors
-            }
-        }
-        else {
-            const deleteId = await this.roleQuery.deleteRole(id);
-
-            return {
-                status: true,
-                data: deleteId
-            }
+        return {
+            status: true,
+            data: deleteId
         }
     };
 }
