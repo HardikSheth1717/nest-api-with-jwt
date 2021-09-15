@@ -1,10 +1,14 @@
 import SqlFunction from '../helpers/sql.function';
+import TypeORMFunction from 'src/helpers/typeorm.function';
+import User from 'src/dto/user.dto';
 
 export class UserQuery {
     sqlFunction: SqlFunction;
+    ormFunction: TypeORMFunction<User>;
 
     constructor() {
         this.sqlFunction = new SqlFunction();
+        this.ormFunction = new TypeORMFunction<User>();
     }
 
     getUserList = async () => {
@@ -13,7 +17,7 @@ export class UserQuery {
             columns: ['*']
         });
     };
-    
+
     getUserDetails = async (id: number) => {
         return await this.sqlFunction.GetById({
             table: "users",
@@ -65,6 +69,10 @@ export class UserQuery {
                 keyValue: id
             });
         }
+    };
+
+    saveUserWithORM = async (user: User) => {
+        return await this.ormFunction.Save(user);
     };
 
     deleteUser = async (id: number) => {

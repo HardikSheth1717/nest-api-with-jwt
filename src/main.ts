@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationError, ValidationPipe } from '@nestjs/common';
+import 'reflect-metadata';
 
 import { AppModule } from './app.module';
 import { ValidationFilter } from './common/filters/validation.filter';

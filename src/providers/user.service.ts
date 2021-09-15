@@ -5,17 +5,23 @@ import { UserQuery } from '../query/user.query';
 import SuccessResponse from '../common/responses/success.response';
 import ErrorResponse from '../common/responses/error.response';
 import User from '../dto/user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
     userQuery: UserQuery;
 
-    constructor() {
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>
+    ) {
         this.userQuery = new UserQuery();
     }
 
     getUserList = async (): Promise<SuccessResponse | ErrorResponse> => {
-        const list = await this.userQuery.getUserList();
+        const list = await this.userRepository.find();
+        
         return {
             status: true,
             data: list
@@ -23,7 +29,7 @@ export class UserService {
     };
 
     getUserDetails = async (id: number): Promise<SuccessResponse | ErrorResponse> => {
-        const list = await this.userQuery.getUserDetails(id);
+        const list = await this.userRepository.findByIds([id]);
 
         return {
             status: true,
@@ -32,7 +38,11 @@ export class UserService {
     };
 
     getUserByUserName = async (userName: string): Promise<SuccessResponse | ErrorResponse> => {
-        const list = await this.userQuery.getUserByUserName(userName);
+        const list = await this.userRepository.find({
+            where: {
+                UserName: userName
+            }
+        });
 
         return {
             status: true,
@@ -65,8 +75,32 @@ export class UserService {
             });
     };
 
+    saveUserWithORM = async (user: User): Promise<SuccessResponse | ErrorResponse> => {
+        user.Password = bcrypt.hashSync(user.Password, 8);
+
+        return this.userRepository.save(user).then(result => {
+            if (result.Id > 0) {
+                return {
+                    status: true,
+                    data: [result]
+                };
+            } else {
+                return {
+                    status: false,
+                    error: "User not saved !"
+                };
+            }
+        })
+        .catch(error => {
+            return {
+                status: false,
+                error: error.message
+            };
+        });
+    }
+
     deleteUser = async (id: number): Promise<SuccessResponse | ErrorResponse> => {
-        const deleteId = await this.userQuery.deleteUser(id);
+        const deleteId = await this.userRepository.delete(id);
 
         return {
             status: true,

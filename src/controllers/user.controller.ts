@@ -24,7 +24,7 @@ export class UserController {
 
     @Post('/saveuser')
     async saveUser(@Body() user: User) : Promise<SuccessResponse | ErrorResponse> {
-        return this.userService.saveUser(user);
+        return this.userService.saveUserWithORM(user);
     };
 
     @Delete('/deleteuser/:id')

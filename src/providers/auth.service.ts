@@ -31,7 +31,7 @@ export class AuthService {
                         error: "User with the same username is already registered!"
                     }
                 } else {
-                    return this.userService.saveUser(user).then(user => {
+                    return this.userService.saveUserWithORM(user).then(user => {
                         if (user.status) {
                             return {
                                 status: true,
